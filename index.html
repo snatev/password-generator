@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SNATEV Password Generator - Generate Secure Passwords Instantly</title>
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icon32.webp">
+    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icon32.webp">
+    <link rel="icon" type="image/png" sizes="16x16" href="/assets/icon32.webp">
+
+    <meta name="author" content="Snatev">
+    <meta name="robots" content="index, follow">
+    <link rel="shortcut icon" href="/assets/icon32.webp">
+    <link rel="canonical" href="https://password.snatev.com">
+    <meta name="description" content="SNATEV Password Generator creates strong, secure passwords with customizable options. Generate complex passwords with uppercase, lowercase, numbers and symbols.">
+    <meta name="keywords" content="password generator, secure password, strong password, random password, security tool, encryption, cyber security, password strength, password manager, online tools">
+
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://password.snatev.com">
+    <meta property="twitter:image" content="https://password.snatev.com/assets/icon32.webp">
+    <meta property="twitter:title" content="SNATEV Password Generator - Online Security Tool">
+    <meta property="twitter:description" content="Create complex, secure passwords instantly with this free tool. Customize length, character types, and more.">
+
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://password.snatev.com">
+    <meta property="og:image" content="https://password.snatev.com/assets/icon32.webp">
+    <meta property="og:title" content="SNATEV Password Generator - Create Strong Secure Passwords">
+    <meta property="og:description" content="Generate strong, secure passwords with customizable length and character options. Perfect for enhancing your online security.">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="bubble" style="width: 25px; height: 25px; left: 25%; animation-duration: 15s; animation-delay: 2s;"></div>
+    <div class="bubble" style="width: 60px; height: 60px; left: 60%; animation-duration: 25s; animation-delay: 5s;"></div>
+    <div class="bubble" style="width: 30px; height: 30px; left: 80%; animation-duration: 18s; animation-delay: 7s;"></div>
+    <div class="bubble" style="width: 45px; height: 45px; left: 35%; animation-duration: 22s; animation-delay: 10s;"></div>
+    <div class="bubble" style="width: 20px; height: 20px; left: 70%; animation-duration: 16s; animation-delay: 12s;"></div>
+    <div class="bubble" style="width: 35px; height: 35px; left: 15%; animation-duration: 19s; animation-delay: 14s;"></div>
+    <div class="bubble" style="width: 50px; height: 50px; left: 50%; animation-duration: 21s; animation-delay: 16s;"></div>
+    <div class="bubble" style="width: 45px; height: 45px; left: 30%; animation-duration: 17s; animation-delay: 1s;"></div>
+    <div class="bubble" style="width: 28px; height: 28px; left: 65%; animation-duration: 19s; animation-delay: 3s;"></div>
+    <div class="bubble" style="width: 38px; height: 38px; left: 85%; animation-duration: 21s; animation-delay: 6s;"></div>
+    <div class="bubble" style="width: 22px; height: 22px; left: 40%; animation-duration: 14s; animation-delay: 8s;"></div>
+    <div class="bubble" style="width: 32px; height: 32px; left: 75%; animation-duration: 24s; animation-delay: 11s;"></div>
+    <div class="bubble" style="width: 42px; height: 42px; left: 20%; animation-duration: 26s; animation-delay: 13s;"></div>
+    <div class="bubble" style="width: 33px; height: 33px; left: 55%; animation-duration: 18s; animation-delay: 15s;"></div>
+
+    <div class="page-container">
+        <main class="main-content">
+            <div class="container">
+                <div class="header">
+                    <div class="header-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h1 class="title">SNATEV Password Generator</h1>
+                </div>
+
+                <div class="content">
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-key"></i>
+                            Generated Password
+                        </div>
+                        <div class="password-display">
+                            <span class="password-text" id="passwordDisplay">Click Generate To Create Password</span>
+                            <div class="copy-notification" id="copyNotification">Copied</div>
+                            <button class="copy-btn tooltip" id="copyBtn">
+                                <i class="fas fa-copy"></i>
+                                <span class="tooltiptext">Copy To Clipboard</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-text-width"></i>
+                            Password Length
+                        </div>
+                        <div class="range-control">
+                            <div class="range-header">
+                                <span class="range-label">Select Length</span>
+                                <span class="range-value" id="lengthValue">12</span>
+                            </div>
+                            <input type="range" class="range-slider" id="lengthSlider" min="1" max="50" value="12">
+                            <div class="range-limits">
+                                <span>Minimum (1)</span>
+                                <span>Maximum (50)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-cog"></i>
+                            Character Options
+                        </div>
+                        <div class="options-group">
+                            <div class="option-item">
+                                <input type="checkbox" id="uppercaseOption" class="option-checkbox" checked>
+                                <label for="uppercaseOption" class="option-label">
+                                    <i class="fas fa-font option-icon"></i>
+                                    <span class="option-text">Uppercase (A-Z)</span>
+                                </label>
+                            </div>
+                            <div class="option-item">
+                                <input type="checkbox" id="lowercaseOption" class="option-checkbox" checked>
+                                <label for="lowercaseOption" class="option-label">
+                                    <i class="fas fa-font option-icon" style="font-size: 14px;"></i>
+                                    <span class="option-text">Lowercase (a-z)</span>
+                                </label>
+                            </div>
+                            <div class="option-item">
+                                <input type="checkbox" id="numbersOption" class="option-checkbox" checked>
+                                <label for="numbersOption" class="option-label">
+                                    <i class="fas fa-sort-numeric-up option-icon"></i>
+                                    <span class="option-text">Numbers (0-9)</span>
+                                </label>
+                            </div>
+                            <div class="option-item">
+                                <input type="checkbox" id="symbolsOption" class="option-checkbox" checked>
+                                <label for="symbolsOption" class="option-label">
+                                    <i class="fas fa-at option-icon"></i>
+                                    <span class="option-text">Symbols (@#$!)</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <div class="toggle-container">
+                            <label class="toggle-label">
+                                <span>Advanced Options</span>
+                                <label class="toggle-switch">
+                                    <input type="checkbox" id="advancedToggle">
+                                    <span class="toggle-slider"></span>
+                                </label>
+                            </label>
+                        </div>
+
+                        <div id="advancedOptions" style="display: none; margin-top: 15px;">
+                            <div class="options-group">
+                                <div class="option-item">
+                                    <input type="checkbox" id="similarOption" class="option-checkbox">
+                                    <label for="similarOption" class="option-label">
+                                        <i class="fas fa-not-equal option-icon"></i>
+                                        <span class="option-text">Exclude Similar</span>
+                                    </label>
+                                </div>
+                                <div class="option-item">
+                                    <input type="checkbox" id="ambiguousOption" class="option-checkbox">
+                                    <label for="ambiguousOption" class="option-label">
+                                        <i class="fas fa-eye-slash option-icon"></i>
+                                        <span class="option-text">Exclude Ambiguous</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="section">
+                        <div class="section-title">
+                            <i class="fas fa-lock"></i>
+                            Password Strength
+                        </div>
+                        <div class="strength-meter">
+                            <div class="strength-label">
+                                <span class="strength-text">Strength:</span>
+                                <span class="strength-badge" id="strengthBadge">None</span>
+                            </div>
+                            <div class="strength-bar">
+                                <div class="strength-fill" id="strengthFill" style="width: 0%; background-color: #ef4444;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button class="generate-btn" id="generateBtn">
+                        <i class="fas fa-sync-alt"></i>
+                        Generate Password
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
