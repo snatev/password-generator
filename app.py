@@ -45,5 +45,4 @@ signal.signal(signal.SIGTERM, shutdown_handler)
 signal.signal(signal.SIGINT, shutdown_handler)
 
 if __name__ == '__main__':
-    app.run(host = '0.0.0.0', port = 1337, debug = True)
-    # serve(app, host='0.0.0.0', port=1337)
+    serve(app, host='0.0.0.0', port=1337)
