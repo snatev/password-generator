@@ -5,31 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SNATEV Password Generator - Generate Secure Passwords Instantly</title>
 
-    <link rel="apple-touch-icon" sizes="180x180" href="/assets/icon32.webp">
-    <link rel="icon" type="image/png" sizes="32x32" href="/assets/icon32.webp">
-    <link rel="icon" type="image/png" sizes="16x16" href="/assets/icon32.webp">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ url_for('static', filename='assets/icon32.webp') }}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='assets/icon32.webp') }}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ url_for('static', filename='assets/icon32.webp') }}">
 
     <meta name="author" content="Snatev">
     <meta name="robots" content="index, follow">
-    <link rel="shortcut icon" href="/assets/icon32.webp">
-    <link rel="canonical" href="https://password.snatev.com">
+    <link rel="shortcut icon" href="{{ url_for('static', filename='assets/icon32.webp') }}">
+    <meta name="canonical" content="{{ request.url_root }}">
     <meta name="description" content="SNATEV Password Generator creates strong, secure passwords with customizable options. Generate complex passwords with uppercase, lowercase, numbers and symbols.">
     <meta name="keywords" content="password generator, secure password, strong password, random password, security tool, encryption, cyber security, password strength, password manager, online tools">
 
     <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://password.snatev.com">
-    <meta property="twitter:image" content="https://password.snatev.com/assets/icon32.webp">
+    <meta property="twitter:url" content="{{ request.url_root }}">
+    <meta property="twitter:image" content="{{ url_for('static', filename='assets/icon32.webp', _external=True) }}">
     <meta property="twitter:title" content="SNATEV Password Generator - Online Security Tool">
     <meta property="twitter:description" content="Create complex, secure passwords instantly with this free tool. Customize length, character types, and more.">
 
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://password.snatev.com">
-    <meta property="og:image" content="https://password.snatev.com/assets/icon32.webp">
+    <meta property="og:url" content="{{ request.url_root }}">
+    <meta property="og:image" content="{{ url_for('static', filename='assets/icon32.webp', _external=True) }}">
     <meta property="og:title" content="SNATEV Password Generator - Create Strong Secure Passwords">
     <meta property="og:description" content="Generate strong, secure passwords with customizable length and character options. Perfect for enhancing your online security.">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
     <div class="bubble" style="width: 25px; height: 25px; left: 25%; animation-duration: 15s; animation-delay: 2s;"></div>
@@ -46,6 +46,15 @@
     <div class="bubble" style="width: 32px; height: 32px; left: 75%; animation-duration: 24s; animation-delay: 11s;"></div>
     <div class="bubble" style="width: 42px; height: 42px; left: 20%; animation-duration: 26s; animation-delay: 13s;"></div>
     <div class="bubble" style="width: 33px; height: 33px; left: 55%; animation-duration: 18s; animation-delay: 15s;"></div>
+
+    <div class="theme-toggle">
+        <label class="theme-switch">
+            <input type="checkbox" id="themeToggle">
+            <span class="theme-slider"></span>
+            <i class="fas fa-moon"></i>
+            <i class="fas fa-sun"></i>
+        </label>
+    </div>
 
     <div class="page-container">
         <main class="main-content">
@@ -64,11 +73,15 @@
                             Generated Password
                         </div>
                         <div class="password-display">
-                            <span class="password-text" id="passwordDisplay">Click Generate To Create Password</span>
+                            <span class="password-text" id="passwordDisplay">Click Generate Password</span>
                             <div class="copy-notification" id="copyNotification">Copied</div>
                             <button class="copy-btn tooltip" id="copyBtn">
                                 <i class="fas fa-copy"></i>
                                 <span class="tooltiptext">Copy To Clipboard</span>
+                            </button>
+                            <button class="refresh-btn tooltip" id="refreshBtn">
+                                <i class="fas fa-sync-alt"></i>
+                                <span class="tooltiptext">Generate New</span>
                             </button>
                         </div>
                     </div>
@@ -119,7 +132,7 @@
                                 </label>
                             </div>
                             <div class="option-item">
-                                <input type="checkbox" id="symbolsOption" class="option-checkbox" checked>
+                                <input type="checkbox" id="symbolsOption" class="option-checkbox">
                                 <label for="symbolsOption" class="option-label">
                                     <i class="fas fa-at option-icon"></i>
                                     <span class="option-text">Symbols (@#$!)</span>
@@ -153,6 +166,20 @@
                                         <span class="option-text">Exclude Ambiguous</span>
                                     </label>
                                 </div>
+                                <div class="option-item">
+                                    <input type="checkbox" id="easyToSayOption" class="option-checkbox">
+                                    <label for="easyToSayOption" class="option-label">
+                                        <i class="fas fa-comment option-icon"></i>
+                                        <span class="option-text">Easy to Say</span>
+                                    </label>
+                                </div>
+                                <div class="option-item">
+                                    <input type="checkbox" id="autoGenOption" class="option-checkbox" checked>
+                                    <label for="autoGenOption" class="option-label">
+                                        <i class="fas fa-bolt option-icon"></i>
+                                        <span class="option-text">Auto-Generate</span>
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -164,24 +191,135 @@
                         </div>
                         <div class="strength-meter">
                             <div class="strength-label">
-                                <span class="strength-text">Strength:</span>
+                                <span class="strength-text">Strength</span>
                                 <span class="strength-badge" id="strengthBadge">None</span>
                             </div>
                             <div class="strength-bar">
                                 <div class="strength-fill" id="strengthFill" style="width: 0%; background-color: #ef4444;"></div>
                             </div>
                         </div>
+                        <div id="strengthInfo" class="strength-info" style="display: none;">
+                            <p><span id="strengthDetail">Your Password Is Weak</span></p>
+                            <div id="strengthDetailInfo" style="display: none; margin-top: 10px;"></div>
+                        </div>
                     </div>
 
-                    <button class="generate-btn" id="generateBtn">
-                        <i class="fas fa-sync-alt"></i>
-                        Generate Password
-                    </button>
+                    <div class="section" id="historySection" style="display: none;">
+                        <div class="section-title">
+                            <i class="fas fa-history"></i>
+                            Password History
+                            <button class="clear-history-btn" id="clearHistoryBtn" title="Clear History">
+                                <i class="fas fa-trash-alt"></i>
+                            </button>
+                        </div>
+                        <div class="history-list" id="historyList">
+                        </div>
+                    </div>
+
+                    <div class="section" id="multiPasswordSection" style="display: none;">
+                        <div class="section-title">
+                            <i class="fas fa-th-list"></i>
+                            Generate Multiple Passwords
+                        </div>
+                        <div class="multi-password-controls">
+                            <div class="quantity-control">
+                                <label for="passwordQuantity">Number Of Passwords</label>
+                                <div class="quantity-input-container">
+                                    <button class="quantity-btn" id="decreaseQuantity"><i class="fas fa-minus"></i></button>
+                                    <input type="number" id="passwordQuantity" min="2" max="10" value="3">
+                                    <button class="quantity-btn" id="increaseQuantity"><i class="fas fa-plus"></i></button>
+                                </div>
+                            </div>
+                            <button class="generate-multi-btn" id="generateMultiBtn">
+                                <i class="fas fa-list"></i>
+                                Generate Multiple
+                            </button>
+                        </div>
+                        <div class="multi-password-results" id="multiPasswordResults" style="display: none;">
+                        </div>
+                    </div>
+
+                    <div class="action-buttons">
+                        <button class="generate-btn" id="generateBtn">
+                            <i class="fas fa-sync-alt"></i>
+                            Generate Password
+                        </button>
+                        <div class="extra-actions">
+                            <button class="action-btn" id="historyToggleBtn" title="Password History">
+                                <i class="fas fa-history"></i>
+                            </button>
+                            <button class="action-btn" id="multiPasswordBtn" title="Generate Multiple Passwords">
+                                <i class="fas fa-th-list"></i>
+                            </button>
+                            <button class="action-btn" id="exportBtn" title="Export Passwords">
+                                <i class="fas fa-file-export"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="container security-tips" id="securityTipsContainer">
+                <div class="header">
+                    <div class="header-icon">
+                        <i class="fas fa-info-circle"></i>
+                    </div>
+                    <h2 class="title">Security Tips</h2>
+                </div>
+                <div class="content">
+                    <div class="tip-item">
+                        <div class="tip-icon">
+                            <i class="fas fa-key"></i>
+                        </div>
+                        <div class="tip-content">
+                            <h3>Use Unique Passwords</h3>
+                            <p>Never reuse passwords across different accounts. Each service should have its own unique password.</p>
+                        </div>
+                    </div>
+                    <div class="tip-item">
+                        <div class="tip-icon">
+                            <i class="fas fa-clock"></i>
+                        </div>
+                        <div class="tip-content">
+                            <h3>Change Regularly</h3>
+                            <p>Update important passwords every 3-6 months, or immediately if a service experiences a data breach.</p>
+                        </div>
+                    </div>
+                    <div class="tip-item">
+                        <div class="tip-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="tip-content">
+                            <h3>Use a Password Manager</h3>
+                            <p>Consider using a password manager to securely store all your unique, complex passwords.</p>
+                        </div>
+                    </div>
+                    <div class="tip-item">
+                        <div class="tip-icon">
+                            <i class="fas fa-user-shield"></i>
+                        </div>
+                        <div class="tip-content">
+                            <h3>Enable Two-Factor Authentication</h3>
+                            <p>For added security, enable 2FA on your accounts to prevent unauthorized access.</p>
+                        </div>
+                    </div>
+                    <div class="tip-toggle">
+                        <button id="toggleSecurityTips">
+                            <span id="toggleTipsText">Hide Security Tips</span>
+                            <i class="fas fa-chevron-up" id="toggleTipsIcon"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
         </main>
     </div>
 
-    <script src="script.js"></script>
+    <footer class="footer">
+        <div class="footer-content">
+            <p>2025 &copy; SNATEV Password Generator</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
