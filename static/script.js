@@ -339,6 +339,9 @@ function createBubbles() {
         const duration = Math.random() * 10 + 15;
         bubble.style.animationDuration = `${duration}s`;
 
+        const negDelay = -Math.random() * duration;
+        bubble.style.animationDelay = `${negDelay}s`;
+
         document.body.appendChild(bubble);
 
         setTimeout(() => {
