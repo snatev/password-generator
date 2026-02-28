@@ -38,7 +38,11 @@ const STRENGTH_LEVELS = [
     { label: 'Strong',    cls: 'level-5', detail: 'Excellent! This password is highly secure.' },
 ];
 
-window.addEventListener('DOMContentLoaded', () => {
+let isInitialized = false;
+
+function initApp() {
+    if (isInitialized) return;
+
     const requiredElements = [
         copyBtn, refreshBtn, generateBtn, passwordDisplay, copyNotification,
         lengthValue, lengthSlider,
@@ -48,6 +52,7 @@ window.addEventListener('DOMContentLoaded', () => {
     ];
 
     if (requiredElements.some((element) => !element)) return;
+    isInitialized = true;
 
     if (footerYear) footerYear.textContent = String(new Date().getFullYear());
     updateSliderBackground();
@@ -79,7 +84,13 @@ window.addEventListener('DOMContentLoaded', () => {
             generateBtn.innerHTML = '<i class="fas fa-bolt"></i> Generate Password';
         }, 260);
     });
-});
+}
+
+if (document.readyState === 'loading') {
+    window.addEventListener('DOMContentLoaded', initApp);
+} else {
+    initApp();
+}
 
 function updateSliderBackground() {
     const min = +lengthSlider.min;
