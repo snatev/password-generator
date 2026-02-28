@@ -1,25 +1,25 @@
-const copyBtn        = document.getElementById('copyBtn');
-const refreshBtn     = document.getElementById('refreshBtn');
-const generateBtn    = document.getElementById('generateBtn');
-const passwordDisplay = document.getElementById('passwordDisplay');
-const copyNotification = document.getElementById('copyNotification');
+let copyBtn;
+let refreshBtn;
+let generateBtn;
+let passwordDisplay;
+let copyNotification;
 
-const lengthValue  = document.getElementById('lengthValue');
-const lengthSlider = document.getElementById('lengthSlider');
+let lengthValue;
+let lengthSlider;
 
-const uppercaseOption = document.getElementById('uppercaseOption');
-const lowercaseOption = document.getElementById('lowercaseOption');
-const numbersOption   = document.getElementById('numbersOption');
-const symbolsOption   = document.getElementById('symbolsOption');
-const similarOption   = document.getElementById('similarOption');
-const ambiguousOption = document.getElementById('ambiguousOption');
-const easyToSayOption = document.getElementById('easyToSayOption');
-const autoGenOption   = document.getElementById('autoGenOption');
+let uppercaseOption;
+let lowercaseOption;
+let numbersOption;
+let symbolsOption;
+let similarOption;
+let ambiguousOption;
+let easyToSayOption;
+let autoGenOption;
 
-const strengthBadge  = document.getElementById('strengthBadge');
-const strengthDetail = document.getElementById('strengthDetail');
-const strengthSegs   = document.getElementById('strengthSegs');
-const footerYear     = document.getElementById('footerYear');
+let strengthBadge;
+let strengthDetail;
+let strengthSegs;
+let footerYear;
 
 const UPPER    = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const LOWER    = 'abcdefghijklmnopqrstuvwxyz';
@@ -43,15 +43,58 @@ let isInitialized = false;
 function initApp() {
     if (isInitialized) return;
 
-    const requiredElements = [
-        copyBtn, refreshBtn, generateBtn, passwordDisplay, copyNotification,
-        lengthValue, lengthSlider,
-        uppercaseOption, lowercaseOption, numbersOption, symbolsOption,
-        similarOption, ambiguousOption, easyToSayOption, autoGenOption,
-        strengthBadge, strengthDetail, strengthSegs,
-    ];
+    copyBtn = document.getElementById('copyBtn');
+    refreshBtn = document.getElementById('refreshBtn');
+    generateBtn = document.getElementById('generateBtn');
+    passwordDisplay = document.getElementById('passwordDisplay');
+    copyNotification = document.getElementById('copyNotification');
 
-    if (requiredElements.some((element) => !element)) return;
+    lengthValue = document.getElementById('lengthValue');
+    lengthSlider = document.getElementById('lengthSlider');
+
+    uppercaseOption = document.getElementById('uppercaseOption');
+    lowercaseOption = document.getElementById('lowercaseOption');
+    numbersOption = document.getElementById('numbersOption');
+    symbolsOption = document.getElementById('symbolsOption');
+    similarOption = document.getElementById('similarOption');
+    ambiguousOption = document.getElementById('ambiguousOption');
+    easyToSayOption = document.getElementById('easyToSayOption');
+    autoGenOption = document.getElementById('autoGenOption');
+
+    strengthBadge = document.getElementById('strengthBadge');
+    strengthDetail = document.getElementById('strengthDetail');
+    strengthSegs = document.getElementById('strengthSegs');
+    footerYear = document.getElementById('footerYear');
+
+    const requiredElements = {
+        copyBtn,
+        refreshBtn,
+        generateBtn,
+        passwordDisplay,
+        copyNotification,
+        lengthValue,
+        lengthSlider,
+        uppercaseOption,
+        lowercaseOption,
+        numbersOption,
+        symbolsOption,
+        similarOption,
+        ambiguousOption,
+        easyToSayOption,
+        autoGenOption,
+        strengthBadge,
+        strengthDetail,
+        strengthSegs,
+    };
+
+    const missing = Object.entries(requiredElements)
+        .filter(([, element]) => !element)
+        .map(([name]) => name);
+
+    if (missing.length) {
+        console.error('Password generator init failed. Missing DOM elements:', missing.join(', '));
+        return;
+    }
     isInitialized = true;
 
     if (footerYear) footerYear.textContent = String(new Date().getFullYear());
@@ -61,13 +104,14 @@ function initApp() {
     lengthSlider.addEventListener('input', () => {
         lengthValue.textContent = lengthSlider.value;
         updateSliderBackground();
-        if (autoGenOption.checked) generatePassword();
+        if (autoGenOption && autoGenOption.checked) generatePassword();
     });
 
     [uppercaseOption, lowercaseOption, numbersOption, symbolsOption,
-    similarOption, ambiguousOption, easyToSayOption].forEach(opt => {
+    similarOption, ambiguousOption, easyToSayOption, autoGenOption].forEach(opt => {
+        if (!opt) return;
         opt.addEventListener('change', () => {
-            if (autoGenOption.checked) generatePassword();
+            if (autoGenOption && autoGenOption.checked) generatePassword();
         });
     });
 
@@ -120,14 +164,14 @@ function buildPassword() {
     if (numbersOption.checked)   pool += NUMBERS;
     if (symbolsOption.checked)   pool += SYMBOLS;
 
-    if (similarOption.checked) {
+    if (similarOption && similarOption.checked) {
         for (const c of SIMILAR) pool = pool.split(c).join('');
     }
-    if (ambiguousOption.checked) {
+    if (ambiguousOption && ambiguousOption.checked) {
         for (const c of AMBIGUOUS) pool = pool.split(c).join('');
     }
 
-    if (easyToSayOption.checked) {
+    if (easyToSayOption && easyToSayOption.checked) {
         pool = pool.replace(/[0-9]/g, '').replace(/[^\w]/g, '');
         for (const v of VOWELS) {
             if (!pool.includes(v)) pool += v;
@@ -167,6 +211,8 @@ function shuffle(str) {
 }
 
 function updateStrength(pwd) {
+    if (!strengthSegs || !strengthBadge || !strengthDetail) return;
+
     let score = 0;
     const len = pwd.length;
 
