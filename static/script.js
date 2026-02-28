@@ -39,15 +39,46 @@ const STRENGTH_LEVELS = [
 ];
 
 window.addEventListener('DOMContentLoaded', () => {
+    const requiredElements = [
+        copyBtn, refreshBtn, generateBtn, passwordDisplay, copyNotification,
+        lengthValue, lengthSlider,
+        uppercaseOption, lowercaseOption, numbersOption, symbolsOption,
+        similarOption, ambiguousOption, easyToSayOption, autoGenOption,
+        strengthBadge, strengthDetail, strengthSegs,
+    ];
+
+    if (requiredElements.some((element) => !element)) return;
+
     if (footerYear) footerYear.textContent = String(new Date().getFullYear());
     updateSliderBackground();
     generatePassword();
-});
 
-lengthSlider.addEventListener('input', () => {
-    lengthValue.textContent = lengthSlider.value;
-    updateSliderBackground();
-    if (autoGenOption.checked) generatePassword();
+    lengthSlider.addEventListener('input', () => {
+        lengthValue.textContent = lengthSlider.value;
+        updateSliderBackground();
+        if (autoGenOption.checked) generatePassword();
+    });
+
+    [uppercaseOption, lowercaseOption, numbersOption, symbolsOption,
+    similarOption, ambiguousOption, easyToSayOption].forEach(opt => {
+        opt.addEventListener('change', () => {
+            if (autoGenOption.checked) generatePassword();
+        });
+    });
+
+    copyBtn.addEventListener('click', copyToClipboard);
+    refreshBtn.addEventListener('click', generatePassword);
+
+    generateBtn.addEventListener('click', () => {
+        generateBtn.classList.add('generating');
+        generateBtn.innerHTML = '<i class="fas fa-arrows-rotate"></i> Generating…';
+
+        setTimeout(() => {
+            generatePassword();
+            generateBtn.classList.remove('generating');
+            generateBtn.innerHTML = '<i class="fas fa-bolt"></i> Generate Password';
+        }, 260);
+    });
 });
 
 function updateSliderBackground() {
@@ -59,26 +90,6 @@ function updateSliderBackground() {
     `linear-gradient(90deg, #6f7785 ${pct}%, rgba(255,255,255,0.08) ${pct}%)`;
 }
 
-[uppercaseOption, lowercaseOption, numbersOption, symbolsOption,
-similarOption, ambiguousOption, easyToSayOption].forEach(opt => {
-    opt.addEventListener('change', () => {
-        if (autoGenOption.checked) generatePassword();
-    });
-});
-
-copyBtn.addEventListener('click', copyToClipboard);
-refreshBtn.addEventListener('click', generatePassword);
-
-generateBtn.addEventListener('click', () => {
-    generateBtn.classList.add('generating');
-    generateBtn.innerHTML = '<i class="fas fa-arrows-rotate"></i> Generating…';
-
-    setTimeout(() => {
-        generatePassword();
-        generateBtn.classList.remove('generating');
-        generateBtn.innerHTML = '<i class="fas fa-bolt"></i> Generate Password';
-    }, 260);
-});
 
 function generatePassword() {
     const pwd = buildPassword();

@@ -19,7 +19,7 @@ def add_security_headers(response):
     response.headers['X-XSS-Protection'] = '1; mode=block'
     response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
     response.headers['Content-Security-Policy'] = ("default-src 'self'; "
-    "script-src 'self' https://cdnjs.cloudflare.com https://static.cloudflareinsights.com; "
+    "script-src 'self' https://cdnjs.cloudflare.com https://static.cloudflareinsights.com 'sha256-lWTlptf5E0x32watuLsykjVcTnR6SazScLTeGiCNiiw='; "
     "style-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'; "
     "font-src 'self' https://cdnjs.cloudflare.com; "
     "img-src 'self' data:;")
