@@ -7,6 +7,8 @@ app = Flask(__name__,
     static_folder='static',
     template_folder='templates')
 
+APP_VERSION = os.getenv('APP_VERSION', '20260228-3')
+
 app.config['SECRET_KEY'] = os.urandom(24)
 app.config['MAX_CONTENT_LENGTH'] = 1 * 1024 * 1024
 app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 31536000
@@ -18,11 +20,20 @@ def add_security_headers(response):
     response.headers['X-Content-Type-Options'] = 'nosniff'
     response.headers['X-XSS-Protection'] = '1; mode=block'
     response.headers['Referrer-Policy'] = 'strict-origin-when-cross-origin'
+    response.headers['X-App-Version'] = APP_VERSION
     response.headers['Content-Security-Policy'] = ("default-src 'self'; "
     "script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://static.cloudflareinsights.com; "
     "style-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'; "
     "font-src 'self' https://cdnjs.cloudflare.com; "
     "img-src 'self' data:;")
+
+    path = request.path or '/'
+    if path == '/' or path.endswith('.html'):
+        response.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate, max-age=0'
+        response.headers['Pragma'] = 'no-cache'
+        response.headers['Expires'] = '0'
+    elif path.startswith('/static/'):
+        response.headers['Cache-Control'] = 'public, max-age=31536000, immutable'
 
     if request.is_secure:
         response.headers['Strict-Transport-Security'] = 'max-age=31536000; includeSubDomains'
